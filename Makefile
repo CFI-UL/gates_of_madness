@@ -2,7 +2,7 @@ CC=mips-linux-gnu-gcc
 CFLAGS=-march=34kc -L./lib:./usr/lib
 
 all: build ld.so.1
-	ssh root@192.168.1.1 "rm /tmp/test"
+	ssh root@192.168.1.1 "rm -f /tmp/test"
 	scp bin/test root@192.168.1.1:/tmp/test
 	ssh root@192.168.1.1 "/tmp/test"
 
