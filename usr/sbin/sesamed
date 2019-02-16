@@ -1,0 +1,7 @@
+#!/bin/sh
+
+while true
+do
+	touch /tmp/sesame_was_here
+	sleep 10
+done

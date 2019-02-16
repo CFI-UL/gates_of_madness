@@ -21,6 +21,11 @@ $(OBJ)/%.o: $(SRC)/%.c
 	mkdir -p obj
 	$(CC) -c $< -o $@
 
+install: build
+	scp -r etc/ usr/ root@192.168.1.1:/
+	scp bin/main root@192.168.1.1:/usr/sbin/sesame
+	ssh root@192.168.1.1 "ln -fs /etc/init.d/sesamed /etc/rc.d/S50sesamed"
+
 helper:
 	scp -r utils/ root@192.168.1.1:
 
