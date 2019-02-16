@@ -25,9 +25,9 @@ void setup_pin(char *pin_number) {
 
 int main() {
   setvbuf(stdout, NULL, _IONBF, 0);
-  setup_pin("19"); // gris
-  setup_pin("21"); // noir
-  setup_pin("24"); // rouge
+  setup_pin("19"); // gray  - sleep
+  setup_pin("21"); // black - dir
+  setup_pin("24"); // red   - step
 
   int pin_fd = open("/sys/class/gpio/gpio19/value", O_WRONLY);
   /*
