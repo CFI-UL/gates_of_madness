@@ -25,17 +25,10 @@ void setup_pin_input(char *pin_number) {
 }
 
 void setup_pins() {
-  // gray - sleep
-  setup_pin_output("19");
-
-  // black - dir
-  setup_pin_output("21");
-
-  // red - step
-  setup_pin_output("24");
-
-  // blue - input
-  setup_pin_input("18");
+  setup_pin_output(PIN_SLEEP);
+  setup_pin_output(PIN_DIR);
+  setup_pin_output(PIN_STEP);
+  setup_pin_input(PIN_INPUT);
 }
 
 void setup() {

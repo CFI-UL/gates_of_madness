@@ -1,26 +1,23 @@
-CC := mips-linux-gnu-gcc
-CFLAGS := -march=34kc -L./lib:./usr/lib
-
+CC  := mips-linux-gnu-gcc
 SRC := src
 OBJ := obj
 
 SOURCES := $(wildcard $(SRC)/*.c)
 OBJECTS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SOURCES))
 
-all: paths ld.so.1 $(OBJECTS)
-	ssh root@192.168.1.1 "rm -f /tmp/test"
-	scp bin/test root@192.168.1.1:/tmp/test
-	ssh root@192.168.1.1 "/tmp/test"
+all: bin/main
+	ssh root@192.168.1.1 "[ -L /lib/ld.so.1 ] || ln -s /lib/libc.so /lib/ld.so.1"
+	ssh root@192.168.1.1 "rm -f /tmp/main"
+	scp bin/main root@192.168.1.1:/tmp/main
+	ssh root@192.168.1.1 "/tmp/main"
 
-paths:
-	mkdir -p bin obj
+bin/main: $(OBJECTS)
+	mkdir -p bin
+	$(CC) $(OBJECTS) -o bin/main
 
 $(OBJ)/%.o: $(SRC)/%.c
-	LD_LIBRARY_PATH=./lib:./usr/lib $(CC) -I$(SRC) $(CLFAGS) -c $< -o $@
-	$(CC) -I$(SRC) -c $< -o $@
-
-ld.so.1:
-	ssh root@192.168.1.1 "[ -L /lib/ld.so.1 ] || ln -s /lib/libc.so /lib/ld.so.1"
+	mkdir -p obj
+	$(CC) -c $< -o $@
 
 helper:
 	scp -r utils/ root@192.168.1.1:
