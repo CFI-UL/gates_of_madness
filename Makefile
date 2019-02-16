@@ -7,15 +7,15 @@ OBJECTS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SOURCES))
 
 all: build
 	ssh root@192.168.1.1 "[ -L /lib/ld.so.1 ] || ln -s /lib/libc.so /lib/ld.so.1"
-	ssh root@192.168.1.1 "rm -f /tmp/main"
-	scp bin/main root@192.168.1.1:/tmp/main
-	ssh root@192.168.1.1 "/tmp/main"
+	ssh root@192.168.1.1 "rm -f /tmp/sesame"
+	scp bin/sesame root@192.168.1.1:/tmp/sesame
+	ssh root@192.168.1.1 "/tmp/sesame"
 
-build: bin/main
+build: bin/sesame
 
-bin/main: $(OBJECTS)
+bin/sesame: $(OBJECTS)
 	mkdir -p bin
-	$(CC) $(OBJECTS) -o bin/main
+	$(CC) $(OBJECTS) -o bin/sesame
 
 $(OBJ)/%.o: $(SRC)/%.c
 	mkdir -p obj
@@ -23,8 +23,8 @@ $(OBJ)/%.o: $(SRC)/%.c
 
 install: build
 	scp -r etc/ usr/ root@192.168.1.1:/
-	scp bin/main root@192.168.1.1:/usr/sbin/sesame
-	ssh root@192.168.1.1 "ln -fs /etc/init.d/sesamed /etc/rc.d/S50sesamed"
+	scp bin/sesame root@192.168.1.1:/usr/sbin/sesame
+	ssh root@192.168.1.1 "/etc/init.d/sesamed enabled || /etc/init.d/sesamed enable"
 
 helper:
 	scp -r utils/ root@192.168.1.1:

