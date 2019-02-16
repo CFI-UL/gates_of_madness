@@ -4,32 +4,43 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <sys/mman.h>
+#include <sys/poll.h>
 
 #include "setup.h"
 
 int main() {
+  struct pollfd fds;
+  fds.fd = 0; /* this is STDIN */
+  fds.events = POLLIN;
+  int ret;
 
   setup();
 
-  int fd = open("/dev/mem", O_RDWR);
-  void *gpio_addr = mmap(0, 1, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0x30000);
+  int sleep_fd = open(PIN_PATH(PIN_SLEEP), O_WRONLY);
+  write(sleep_fd, "1\n", 2);
 
-  if (gpio_addr == -1)
-    printf("fuck");
+  int dir_fd = open(PIN_PATH(PIN_DIR), O_WRONLY);
+  write(dir_fd, "1\n", 2);
 
-  printf("%x\n", gpio_addr);
+  puts("Press any key to stop\n");
 
-  int pin_fd = open(PIN_PATH(PIN_SLEEP), O_WRONLY);
-  /*
-  for (int i = 0; ; i++) {
-	  // 2 ms
-	  write(pin_fd, "1\n", 2);
-	  usleep(2000);
+  int pin_fd = open(PIN_PATH(PIN_STEP), O_WRONLY);
+  for (int i = 0; i < 300; i++) {
+    // 2.5 ms
+    write(pin_fd, "1\n", 2);
+    usleep(25 * 100);
 
-	  // 20ms
-	  write(pin_fd, "0\n", 2);
-	  usleep(18000);
+    // 2.5 ms
+    write(pin_fd, "0\n", 2);
+    usleep(25 * 100);
+
+    ret = poll(&fds, 1, 0);
+    if (ret == 1)
+      break;
   }
-  */
+
+  sleep(2);
+
+  write(sleep_fd, "0\n", 2);
+
 }
