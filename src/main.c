@@ -20,7 +20,7 @@ int main() {
 
   printf("%x\n", gpio_addr);
 
-  int pin_fd = open("/sys/class/gpio/gpio19/value", O_WRONLY);
+  int pin_fd = open(PIN_PATH(PIN_SLEEP), O_WRONLY);
   /*
   for (int i = 0; ; i++) {
 	  // 2 ms

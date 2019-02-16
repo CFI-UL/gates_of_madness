@@ -5,11 +5,13 @@ OBJ := obj
 SOURCES := $(wildcard $(SRC)/*.c)
 OBJECTS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SOURCES))
 
-all: bin/main
+all: build
 	ssh root@192.168.1.1 "[ -L /lib/ld.so.1 ] || ln -s /lib/libc.so /lib/ld.so.1"
 	ssh root@192.168.1.1 "rm -f /tmp/main"
 	scp bin/main root@192.168.1.1:/tmp/main
 	ssh root@192.168.1.1 "/tmp/main"
+
+build: bin/main
 
 bin/main: $(OBJECTS)
 	mkdir -p bin
