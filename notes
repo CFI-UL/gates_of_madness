@@ -1,2 +1,12 @@
 min: 500 micro seconds
 max: 2350 micro seconds
+
+
+brown comme ground,
+gray pour le 5V
+
+pins:
+- gray sleep
+- black direction
+- red step
+- blue input
