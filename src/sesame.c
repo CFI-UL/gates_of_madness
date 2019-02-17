@@ -19,18 +19,16 @@ int main() {
   int sleep_fd = open(PIN_PATH(PIN_SLEEP), O_WRONLY);
   write(sleep_fd, "1\n", 2);
 
-  int dir_fd = open(PIN_PATH(PIN_DIR), O_WRONLY);
-  write(dir_fd, "1\n", 2);
-
+  puts("Entering step loop\n");
   puts("Press any key to stop\n");
 
   int pin_fd = open(PIN_PATH(PIN_STEP), O_WRONLY);
-  for (int i = 0; i < 300; i++) {
-    // 2.5 ms
+  for (int i = 0; i < 4000; i++) { // 40 * 50ms = 2s
+    // 25 ms
     write(pin_fd, "1\n", 2);
     usleep(25 * 100);
 
-    // 2.5 ms
+    // 25 ms
     write(pin_fd, "0\n", 2);
     usleep(25 * 100);
 
@@ -39,8 +37,10 @@ int main() {
       break;
   }
 
+  puts("Loop finished, waiting some seconds...\n");
   sleep(2);
 
+  puts("Done! Cleaning and exiting\n");
   write(sleep_fd, "0\n", 2);
 
 }

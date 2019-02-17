@@ -5,8 +5,7 @@
 #include <stdlib.h>
 
 #define PIN_SLEEP "19" // gray
-#define PIN_DIR "21" // black
-#define PIN_STEP "24" // red
+#define PIN_STEP "21" // orange
 #define PIN_INPUT "18" // blue
 
 #define PIN_PATH(SOME_PIN) "/sys/class/gpio/gpio" SOME_PIN "/value"

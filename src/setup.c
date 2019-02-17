@@ -26,7 +26,6 @@ void setup_pin_input(char *pin_number) {
 
 void setup_pins() {
   setup_pin_output(PIN_SLEEP);
-  setup_pin_output(PIN_DIR);
   setup_pin_output(PIN_STEP);
   setup_pin_input(PIN_INPUT);
 }
