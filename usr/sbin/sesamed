@@ -6,6 +6,8 @@ do
     then
 	touch /tmp/sesame_was_here
 	/usr/sbin/sesame -d >> /var/log/sesame 2>&1
+	tail -n 500 /var/log/sesame > /tmp/log
+	mv /tmp/log /var/log/sesame
     fi
     sleep 5
 done
