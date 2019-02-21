@@ -25,6 +25,7 @@ install: build
 	scp -r etc/ usr/ root@192.168.1.1:/
 	scp bin/sesame root@192.168.1.1:/usr/sbin/sesame
 	ssh root@192.168.1.1 "/etc/init.d/sesamed enabled || /etc/init.d/sesamed enable"
+	ssh root@192.168.1.1 "/etc/init.d/sesamed restart"
 
 helper:
 	scp -r utils/ root@192.168.1.1:

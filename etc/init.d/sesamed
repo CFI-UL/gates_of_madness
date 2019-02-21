@@ -12,5 +12,5 @@ start_service () {
 }
 
 stop_service () {
-	rm /tmp/sesame_was_here
+	[ -f "/tmp/sesame_was_here" ] && rm /tmp/sesame_was_here
 }

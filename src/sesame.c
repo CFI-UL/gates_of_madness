@@ -5,14 +5,21 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <sys/poll.h>
+#include <string.h>
+#include <stdbool.h>
 
 #include "setup.h"
 
-int main() {
+int main(int argc, char **argv) {
   struct pollfd fds;
   fds.fd = 0; /* this is STDIN */
   fds.events = POLLIN;
-  int ret;
+  int ret = 0;
+  bool daemonize = false;
+
+  for (int i = 1; i < argc; ++i)
+    if (strcmp(argv[i], "-d") == 0)
+      daemonize = true;
 
   setup();
 
@@ -20,7 +27,9 @@ int main() {
   write(sleep_fd, "1\n", 2);
 
   puts("Entering step loop\n");
-  puts("Press any key to stop\n");
+
+  if (!daemonize)
+    puts("Press any key to stop\n");
 
   int pin_fd = open(PIN_PATH(PIN_STEP), O_WRONLY);
   for (int i = 0; i < 4000; i++) { // 40 * 50ms = 2s
@@ -32,9 +41,11 @@ int main() {
     write(pin_fd, "0\n", 2);
     usleep(25 * 100);
 
-    ret = poll(&fds, 1, 0);
-    if (ret == 1)
-      break;
+    if (!daemonize) {
+      ret = poll(&fds, 1, 0);
+      if (ret == 1)
+	break;
+    }
   }
 
   puts("Loop finished, waiting some seconds...\n");
