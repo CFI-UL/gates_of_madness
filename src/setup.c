@@ -1,16 +1,22 @@
 #include "setup.h"
 
 void run(char *cmd) {
-  puts(cmd);
+  printf("Run: %s\n", cmd);
   system(cmd);
 }
 
 // prepares a gpio pin
 void setup_pin(char *pin_number, char *direction) {
   char buf[64] = {0};
+  struct stat s;
 
-  snprintf(buf, 64, "echo %s > /sys/class/gpio/export", pin_number);
-  run(buf);
+  snprintf(buf, 64, "/sys/class/gpio/gpio%s/", pin_number);
+  int err = stat(buf, &s);
+
+  if (err == -1) {
+    snprintf(buf, 64, "echo %s > /sys/class/gpio/export", pin_number);
+    run(buf);
+  }
 
   snprintf(buf, 64, "echo %s > /sys/class/gpio/gpio%s/direction", direction, pin_number);
   run(buf);

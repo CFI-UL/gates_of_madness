@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #define PIN_SLEEP "19" // gray
 #define PIN_STEP "21" // orange
