@@ -14,6 +14,8 @@ vagrant ssh
 
 then from the vm, `make` will cross-compile, push and run the binary on an openwrt instance running on 192.168.1.1
 
+`make install` setups the scripts and upload the sesame binary to /usr/sbin/
+
 ## utils/
 
 some helper scripts to play with gpio, `make helper` will push them to the router
